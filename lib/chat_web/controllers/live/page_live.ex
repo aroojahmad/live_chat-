@@ -12,5 +12,4 @@ defmodule ChatWeb.PageLive do
     random_slug = "/" <> MnemonicSlugs.generate_slug(4)
     {:noreply, push_redirect(socket, to: random_slug)}
   end
-
 end

@@ -6,7 +6,14 @@ defmodule ChatWeb.RoomLive do
   def mount(%{"id" => room_id}, _session, socket) do
     topic = "room:" <> room_id
     ChatWeb.Endpoint.subscribe(topic)
-    {:ok, assign(socket, room_id: room_id, topic: topic, messages: ["X joined the chat."])}
+
+    {:ok,
+     assign(socket,
+       room_id: room_id,
+       topic: topic,
+       messages: ["X joined the chat."],
+       temporary_assigns: [messages: []]
+     )}
   end
 
   @impl true
@@ -19,7 +26,6 @@ defmodule ChatWeb.RoomLive do
   @impl true
   def handle_info(%{event: "new-message", payload: message}, socket) do
     Logger.info(payload: message)
-    {:noreply, assign(socket, messages: socket.assigns.messages ++ [message])}
+    {:noreply, assign(socket, messages: [message])}
   end
-
 end
